@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f89dd0742209eedef9e8afaa0f0f6f64d47e11578e81a3670d8fa40b4fb6b174.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a20ec8d0e208b27a1d6743f2108712fc222ee450774b0a12920bbadf691e8d84.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -46,18 +46,32 @@
             "data": "S3AccessRole49D67050"
           }
         ],
-        "/CloudBackStack/unique-initialtable-nameMP": [
+        "/CloudBackStack/prediction-table": [
           {
             "type": "aws:cdk:hasPhysicalName",
             "data": {
-              "Ref": "uniqueinitialtablenameMP08938AAF"
+              "Ref": "predictiontable4988DB8D"
             }
           }
         ],
-        "/CloudBackStack/unique-initialtable-nameMP/Resource": [
+        "/CloudBackStack/prediction-table/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "uniqueinitialtablenameMP08938AAF"
+            "data": "predictiontable4988DB8D"
+          }
+        ],
+        "/CloudBackStack/aggregatedMeasurements": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "aggregatedMeasurements237BB9F4"
+            }
+          }
+        ],
+        "/CloudBackStack/aggregatedMeasurements/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "aggregatedMeasurements237BB9F4"
           }
         ],
         "/CloudBackStack/ApiGatewayRole/Resource": [
@@ -81,7 +95,7 @@
         "/CloudBackStack/Internship/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "InternshipDeployment3F0AEB9E971200e519c4e02d4b1a2c75f30cb688"
+            "data": "InternshipDeployment3F0AEB9Eb07b0158694010b9239d2c6a2b1104c6"
           }
         ],
         "/CloudBackStack/Internship/DeploymentStage.prod/Resource": [
@@ -132,6 +146,156 @@
             "data": "InternshiphelloWorldGET219FC906"
           }
         ],
+        "/CloudBackStack/Internship/Default/getDataOpenAQ/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetDataOpenAQ86B46926"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getDataOpenAQ/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetDataOpenAQOPTIONSEB2FDFBB"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getDataOpenAQ/GET/ApiPermission.CloudBackStackInternship9A4650D6.GET..getDataOpenAQ": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetDataOpenAQGETApiPermissionCloudBackStackInternship9A4650D6GETgetDataOpenAQ5A6B6692"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getDataOpenAQ/GET/ApiPermission.Test.CloudBackStackInternship9A4650D6.GET..getDataOpenAQ": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetDataOpenAQGETApiPermissionTestCloudBackStackInternship9A4650D6GETgetDataOpenAQAD5E3726"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getDataOpenAQ/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetDataOpenAQGET5931F6AE"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getLocations/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetLocations60AC7083"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getLocations/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetLocationsOPTIONS56596108"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getLocations/GET/ApiPermission.CloudBackStackInternship9A4650D6.GET..getLocations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetLocationsGETApiPermissionCloudBackStackInternship9A4650D6GETgetLocations458B05B0"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getLocations/GET/ApiPermission.Test.CloudBackStackInternship9A4650D6.GET..getLocations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetLocationsGETApiPermissionTestCloudBackStackInternship9A4650D6GETgetLocations295751C2"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/getLocations/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipgetLocationsGET5BA0F1B3"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/agregateData/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipagregateData42FEA669"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/agregateData/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipagregateDataOPTIONSDD364535"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/agregateData/POST/ApiPermission.CloudBackStackInternship9A4650D6.POST..agregateData": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipagregateDataPOSTApiPermissionCloudBackStackInternship9A4650D6POSTagregateDataE8BDA7F3"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/agregateData/POST/ApiPermission.Test.CloudBackStackInternship9A4650D6.POST..agregateData": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipagregateDataPOSTApiPermissionTestCloudBackStackInternship9A4650D6POSTagregateDataE9EE2049"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/agregateData/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipagregateDataPOST23F298D2"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/prediction_pollution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Internshippredictionpollution08E7EF7E"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/prediction_pollution/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshippredictionpollutionOPTIONS3876F44D"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/prediction_pollution/POST/ApiPermission.CloudBackStackInternship9A4650D6.POST..prediction_pollution": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshippredictionpollutionPOSTApiPermissionCloudBackStackInternship9A4650D6POSTpredictionpollutionD32A2B5E"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/prediction_pollution/POST/ApiPermission.Test.CloudBackStackInternship9A4650D6.POST..prediction_pollution": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshippredictionpollutionPOSTApiPermissionTestCloudBackStackInternship9A4650D6POSTpredictionpollution9E9E0CB1"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/prediction_pollution/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshippredictionpollutionPOST4F665949"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/search/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Internshipsearch03E34CA7"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/search/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipsearchOPTIONS97C4CD88"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/search/GET/ApiPermission.CloudBackStackInternship9A4650D6.GET..search": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipsearchGETApiPermissionCloudBackStackInternship9A4650D6GETsearch04347CA5"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/search/GET/ApiPermission.Test.CloudBackStackInternship9A4650D6.GET..search": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipsearchGETApiPermissionTestCloudBackStackInternship9A4650D6GETsearch66EA953A"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/search/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipsearchGET0C4F63FD"
+          }
+        ],
         "/CloudBackStack/LambdaRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -154,6 +318,66 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "helloWorldExampleApiGatewayInvokePermission66FD336F"
+          }
+        ],
+        "/CloudBackStack/getData/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "getDataF05E9BD5"
+          }
+        ],
+        "/CloudBackStack/getData/ApiGatewayInvokePermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "getDataApiGatewayInvokePermission7CA06792"
+          }
+        ],
+        "/CloudBackStack/getLocations/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "getLocations07340221"
+          }
+        ],
+        "/CloudBackStack/getLocations/ApiGatewayInvokePermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "getLocationsApiGatewayInvokePermission4A9698B0"
+          }
+        ],
+        "/CloudBackStack/agregateData/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "agregateDataC2032335"
+          }
+        ],
+        "/CloudBackStack/agregateData/ApiGatewayInvokePermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "agregateDataApiGatewayInvokePermission1D261441"
+          }
+        ],
+        "/CloudBackStack/prediction_pollution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "predictionpollution2581FFC6"
+          }
+        ],
+        "/CloudBackStack/prediction_pollution/ApiGatewayInvokePermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "predictionpollutionApiGatewayInvokePermissionC010560D"
+          }
+        ],
+        "/CloudBackStack/search/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "searchF2A83B93"
+          }
+        ],
+        "/CloudBackStack/search/ApiGatewayInvokePermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "searchApiGatewayInvokePermissionE44B604E"
           }
         ],
         "/CloudBackStack/CDKMetadata/Default": [

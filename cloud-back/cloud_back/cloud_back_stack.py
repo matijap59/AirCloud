@@ -55,10 +55,23 @@ class CloudBackStack(Stack):
         # )
         #
         table = dynamodb.Table(
-            self, 'unique-initialtable-nameMP',
-            table_name='unique-initialtable-nameMP',
-            partition_key={'name': 'id', 'type': dynamodb.AttributeType.STRING},
-            #sort_key={'name': 'title', 'type': dynamodb.AttributeType.STRING},
+            self, 'prediction-table',
+            table_name='prediction-table-date',
+            partition_key={'name': 'idLocation', 'type': dynamodb.AttributeType.STRING},
+            sort_key={'name': 'date', 'type': dynamodb.AttributeType.STRING},
+            stream=dynamodb.StreamViewType.NEW_IMAGE,
+        )
+
+        table.add_global_secondary_index(
+            index_name='location_date',
+            partition_key={'name': 'id', 'type': dynamodb.AttributeType.STRING}
+        )
+
+        tablePreviousDate = dynamodb.Table(
+            self, 'aggregatedMeasurements',
+            table_name='aggregatedMeasurements',
+            partition_key={'name': 'idLocation', 'type': dynamodb.AttributeType.STRING},
+            sort_key={'name': 'date', 'type': dynamodb.AttributeType.STRING},
             stream=dynamodb.StreamViewType.NEW_IMAGE
         )
         #
@@ -189,6 +202,61 @@ class CloudBackStack(Stack):
             None
         )
 
+        get_data_lambda = create_lambda_function(
+            "getData",
+            "get_data",
+            "getDataOpenAQ.lambda_handler",
+            "get_data",
+            "GET",
+            [],
+            None,
+            None
+        )
+
+        get_locations_lambda = create_lambda_function(
+            "getLocations",
+            "get_locations",
+            "getLocations.lambda_handler",
+            "get_locations",
+            "GET",
+            [],
+            None,
+            None
+        )
+
+        post_measurements_lambda = create_lambda_function(
+            "agregateData",
+            "post_measurements",
+            "agregateData.lambda_handler",
+            "post_measurements",
+            "POST",
+            [],
+            tablePreviousDate.table_name,
+            None
+        )
+
+        predictions_pollution_lambda = create_lambda_function(
+            "prediction_pollution",
+            "predictions_pollution",
+            "prediction_pollution.lambda_handler",
+            "predictions_pollution",
+            "POST",
+            [],
+            table.table_name,
+            None
+        )
+
+        search_lambda = create_lambda_function(
+            "search",
+            "search",
+            "search.lambda_handler",
+            "search",
+            "POST",
+            [],
+            table.table_name,
+            None
+        )
+
         hello_world_lambda.add_permission(
             "ApiGatewayInvokePermission",
             action="lambda:InvokeFunction",
@@ -196,6 +264,67 @@ class CloudBackStack(Stack):
             source_arn=self.api.arn_for_execute_api("/*/*/*")
         )
 
+        get_data_lambda.add_permission(
+            "ApiGatewayInvokePermission",
+            action="lambda:InvokeFunction",
+            principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
+            source_arn=self.api.arn_for_execute_api("/*/*/*")
+        )
+
+        get_locations_lambda.add_permission(
+            "ApiGatewayInvokePermission",
+            action="lambda:InvokeFunction",
+            principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
+            source_arn=self.api.arn_for_execute_api("/*/*/*")
+        )
+
+        post_measurements_lambda.add_permission(
+            "ApiGatewayInvokePermission",
+            action="lambda:InvokeFunction",
+            principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
+            source_arn=self.api.arn_for_execute_api("/*/*/*")
+        )
+
+        predictions_pollution_lambda.add_permission(
+            "ApiGatewayInvokePermission",
+            action="lambda:InvokeFunction",
+            principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
+            source_arn=self.api.arn_for_execute_api("/*/*/*")
+        )
+
+        search_lambda.add_permission(
+            "ApiGatewayInvokePermission",
+            action="lambda:InvokeFunction",
+            principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
+            source_arn=self.api.arn_for_execute_api("/*/*/*")
+        )
+
+        table.grant_read_data(get_data_lambda)
+
+
         self.api.root.add_resource("helloWorld").add_method("GET", apigateway.LambdaIntegration(hello_world_lambda,
                                                                                               credentials_role=api_gateway_role,
                                                                                               proxy=True))
+
+        self.api.root.add_resource("getDataOpenAQ").add_method("GET", apigateway.LambdaIntegration(get_data_lambda,
+                                                                                              credentials_role=api_gateway_role,
+                                                                                              proxy=True))
+
+        self.api.root.add_resource("getLocations").add_method("GET", apigateway.LambdaIntegration(get_locations_lambda,
+                                                                                                   credentials_role=api_gateway_role,
+                                                                                                   proxy=True))
+
+        self.api.root.add_resource("agregateData").add_method("POST", apigateway.LambdaIntegration(post_measurements_lambda,
+                                                                                                  credentials_role=api_gateway_role,
+                                                                                                  proxy=True))
+
+        self.api.root.add_resource("prediction_pollution").add_method("POST",
+                                                              apigateway.LambdaIntegration(predictions_pollution_lambda,
+                                                                                           credentials_role=api_gateway_role,
+                                                                                           proxy=True))
+
+        self.api.root.add_resource("search").add_method("GET",
+                                                                      apigateway.LambdaIntegration(
+                                                                          search_lambda,
+                                                                          credentials_role=api_gateway_role,
+                                                                          proxy=True))

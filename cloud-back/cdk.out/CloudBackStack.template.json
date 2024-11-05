@@ -50,19 +50,49 @@
     "aws:cdk:path": "CloudBackStack/S3AccessRole/Resource"
    }
   },
-  "uniqueinitialtablenameMP08938AAF": {
+  "predictiontable4988DB8D": {
    "Type": "AWS::DynamoDB::Table",
    "Properties": {
     "AttributeDefinitions": [
+     {
+      "AttributeName": "idLocation",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "date",
+      "AttributeType": "S"
+     },
      {
       "AttributeName": "id",
       "AttributeType": "S"
      }
     ],
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "location_date",
+      "KeySchema": [
+       {
+        "AttributeName": "id",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+       "ReadCapacityUnits": 5,
+       "WriteCapacityUnits": 5
+      }
+     }
+    ],
     "KeySchema": [
      {
-      "AttributeName": "id",
+      "AttributeName": "idLocation",
       "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "date",
+      "KeyType": "RANGE"
      }
     ],
     "ProvisionedThroughput": {
@@ -72,12 +102,50 @@
     "StreamSpecification": {
      "StreamViewType": "NEW_IMAGE"
     },
-    "TableName": "unique-initialtable-nameMP"
+    "TableName": "prediction-table-date"
    },
    "UpdateReplacePolicy": "Retain",
    "DeletionPolicy": "Retain",
    "Metadata": {
-    "aws:cdk:path": "CloudBackStack/unique-initialtable-nameMP/Resource"
+    "aws:cdk:path": "CloudBackStack/prediction-table/Resource"
+   }
+  },
+  "aggregatedMeasurements237BB9F4": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "idLocation",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "date",
+      "AttributeType": "S"
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "idLocation",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "date",
+      "KeyType": "RANGE"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    },
+    "StreamSpecification": {
+     "StreamViewType": "NEW_IMAGE"
+    },
+    "TableName": "aggregatedMeasurements"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/aggregatedMeasurements/Resource"
    }
   },
   "ApiGatewayRoleD2518903": {
@@ -140,7 +208,7 @@
     "aws:cdk:path": "CloudBackStack/Internship/Resource"
    }
   },
-  "InternshipDeployment3F0AEB9E971200e519c4e02d4b1a2c75f30cb688": {
+  "InternshipDeployment3F0AEB9Eb07b0158694010b9239d2c6a2b1104c6": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "",
@@ -149,10 +217,25 @@
     }
    },
    "DependsOn": [
+    "InternshipagregateDataOPTIONSDD364535",
+    "InternshipagregateDataPOST23F298D2",
+    "InternshipagregateData42FEA669",
+    "InternshipgetDataOpenAQGET5931F6AE",
+    "InternshipgetDataOpenAQOPTIONSEB2FDFBB",
+    "InternshipgetDataOpenAQ86B46926",
+    "InternshipgetLocationsGET5BA0F1B3",
+    "InternshipgetLocationsOPTIONS56596108",
+    "InternshipgetLocations60AC7083",
     "InternshiphelloWorldGET219FC906",
     "InternshiphelloWorldOPTIONS24FCFE6C",
     "InternshiphelloWorld1C4DAF2F",
-    "InternshipOPTIONSBCBA6652"
+    "InternshipOPTIONSBCBA6652",
+    "InternshippredictionpollutionOPTIONS3876F44D",
+    "InternshippredictionpollutionPOST4F665949",
+    "Internshippredictionpollution08E7EF7E",
+    "InternshipsearchGET0C4F63FD",
+    "InternshipsearchOPTIONS97C4CD88",
+    "Internshipsearch03E34CA7"
    ],
    "Metadata": {
     "aws:cdk:path": "CloudBackStack/Internship/Deployment/Resource"
@@ -162,7 +245,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "InternshipDeployment3F0AEB9E971200e519c4e02d4b1a2c75f30cb688"
+     "Ref": "InternshipDeployment3F0AEB9Eb07b0158694010b9239d2c6a2b1104c6"
     },
     "RestApiId": {
      "Ref": "InternshipC3A40F62"
@@ -413,6 +496,976 @@
     "aws:cdk:path": "CloudBackStack/Internship/Default/helloWorld/GET/Resource"
    }
   },
+  "InternshipgetDataOpenAQ86B46926": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "InternshipC3A40F62",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "getDataOpenAQ",
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getDataOpenAQ/Resource"
+   }
+  },
+  "InternshipgetDataOpenAQOPTIONSEB2FDFBB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "InternshipgetDataOpenAQ86B46926"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getDataOpenAQ/OPTIONS/Resource"
+   }
+  },
+  "InternshipgetDataOpenAQGETApiPermissionCloudBackStackInternship9A4650D6GETgetDataOpenAQ5A6B6692": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getDataF05E9BD5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/",
+       {
+        "Ref": "InternshipDeploymentStageprodD264E60D"
+       },
+       "/GET/getDataOpenAQ"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getDataOpenAQ/GET/ApiPermission.CloudBackStackInternship9A4650D6.GET..getDataOpenAQ"
+   }
+  },
+  "InternshipgetDataOpenAQGETApiPermissionTestCloudBackStackInternship9A4650D6GETgetDataOpenAQAD5E3726": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getDataF05E9BD5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/test-invoke-stage/GET/getDataOpenAQ"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getDataOpenAQ/GET/ApiPermission.Test.CloudBackStackInternship9A4650D6.GET..getDataOpenAQ"
+   }
+  },
+  "InternshipgetDataOpenAQGET5931F6AE": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "ApiGatewayRoleD2518903",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "getDataF05E9BD5",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "InternshipgetDataOpenAQ86B46926"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getDataOpenAQ/GET/Resource"
+   }
+  },
+  "InternshipgetLocations60AC7083": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "InternshipC3A40F62",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "getLocations",
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getLocations/Resource"
+   }
+  },
+  "InternshipgetLocationsOPTIONS56596108": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "InternshipgetLocations60AC7083"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getLocations/OPTIONS/Resource"
+   }
+  },
+  "InternshipgetLocationsGETApiPermissionCloudBackStackInternship9A4650D6GETgetLocations458B05B0": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getLocations07340221",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/",
+       {
+        "Ref": "InternshipDeploymentStageprodD264E60D"
+       },
+       "/GET/getLocations"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getLocations/GET/ApiPermission.CloudBackStackInternship9A4650D6.GET..getLocations"
+   }
+  },
+  "InternshipgetLocationsGETApiPermissionTestCloudBackStackInternship9A4650D6GETgetLocations295751C2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getLocations07340221",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/test-invoke-stage/GET/getLocations"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getLocations/GET/ApiPermission.Test.CloudBackStackInternship9A4650D6.GET..getLocations"
+   }
+  },
+  "InternshipgetLocationsGET5BA0F1B3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "ApiGatewayRoleD2518903",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "getLocations07340221",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "InternshipgetLocations60AC7083"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/getLocations/GET/Resource"
+   }
+  },
+  "InternshipagregateData42FEA669": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "InternshipC3A40F62",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "agregateData",
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/agregateData/Resource"
+   }
+  },
+  "InternshipagregateDataOPTIONSDD364535": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "InternshipagregateData42FEA669"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/agregateData/OPTIONS/Resource"
+   }
+  },
+  "InternshipagregateDataPOSTApiPermissionCloudBackStackInternship9A4650D6POSTagregateDataE8BDA7F3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "agregateDataC2032335",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/",
+       {
+        "Ref": "InternshipDeploymentStageprodD264E60D"
+       },
+       "/POST/agregateData"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/agregateData/POST/ApiPermission.CloudBackStackInternship9A4650D6.POST..agregateData"
+   }
+  },
+  "InternshipagregateDataPOSTApiPermissionTestCloudBackStackInternship9A4650D6POSTagregateDataE9EE2049": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "agregateDataC2032335",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/test-invoke-stage/POST/agregateData"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/agregateData/POST/ApiPermission.Test.CloudBackStackInternship9A4650D6.POST..agregateData"
+   }
+  },
+  "InternshipagregateDataPOST23F298D2": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "ApiGatewayRoleD2518903",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "agregateDataC2032335",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "InternshipagregateData42FEA669"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/agregateData/POST/Resource"
+   }
+  },
+  "Internshippredictionpollution08E7EF7E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "InternshipC3A40F62",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "prediction_pollution",
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/prediction_pollution/Resource"
+   }
+  },
+  "InternshippredictionpollutionOPTIONS3876F44D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Internshippredictionpollution08E7EF7E"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/prediction_pollution/OPTIONS/Resource"
+   }
+  },
+  "InternshippredictionpollutionPOSTApiPermissionCloudBackStackInternship9A4650D6POSTpredictionpollutionD32A2B5E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "predictionpollution2581FFC6",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/",
+       {
+        "Ref": "InternshipDeploymentStageprodD264E60D"
+       },
+       "/POST/prediction_pollution"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/prediction_pollution/POST/ApiPermission.CloudBackStackInternship9A4650D6.POST..prediction_pollution"
+   }
+  },
+  "InternshippredictionpollutionPOSTApiPermissionTestCloudBackStackInternship9A4650D6POSTpredictionpollution9E9E0CB1": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "predictionpollution2581FFC6",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/test-invoke-stage/POST/prediction_pollution"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/prediction_pollution/POST/ApiPermission.Test.CloudBackStackInternship9A4650D6.POST..prediction_pollution"
+   }
+  },
+  "InternshippredictionpollutionPOST4F665949": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "ApiGatewayRoleD2518903",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "predictionpollution2581FFC6",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Internshippredictionpollution08E7EF7E"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/prediction_pollution/POST/Resource"
+   }
+  },
+  "Internshipsearch03E34CA7": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "InternshipC3A40F62",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "search",
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/search/Resource"
+   }
+  },
+  "InternshipsearchOPTIONS97C4CD88": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Internshipsearch03E34CA7"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/search/OPTIONS/Resource"
+   }
+  },
+  "InternshipsearchGETApiPermissionCloudBackStackInternship9A4650D6GETsearch04347CA5": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "searchF2A83B93",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/",
+       {
+        "Ref": "InternshipDeploymentStageprodD264E60D"
+       },
+       "/GET/search"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/search/GET/ApiPermission.CloudBackStackInternship9A4650D6.GET..search"
+   }
+  },
+  "InternshipsearchGETApiPermissionTestCloudBackStackInternship9A4650D6GETsearch66EA953A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "searchF2A83B93",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/test-invoke-stage/GET/search"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/search/GET/ApiPermission.Test.CloudBackStackInternship9A4650D6.GET..search"
+   }
+  },
+  "InternshipsearchGET0C4F63FD": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "ApiGatewayRoleD2518903",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "searchF2A83B93",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Internshipsearch03E34CA7"
+    },
+    "RestApiId": {
+     "Ref": "InternshipC3A40F62"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/Internship/Default/search/GET/Resource"
+   }
+  },
   "LambdaRole3A44B857": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -469,7 +1522,7 @@
        "Resource": [
         {
          "Fn::GetAtt": [
-          "uniqueinitialtablenameMP08938AAF",
+          "predictiontable4988DB8D",
           "Arn"
          ]
         },
@@ -484,6 +1537,41 @@
             ]
            },
            "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "predictiontable4988DB8D",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "predictiontable4988DB8D",
+             "Arn"
+            ]
+           },
+           "/index/*"
           ]
          ]
         }
@@ -580,10 +1668,401 @@
     "aws:cdk:path": "CloudBackStack/helloWorldExample/ApiGatewayInvokePermission"
    }
   },
+  "getDataF05E9BD5": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "eeebbf0c853893040f15936f7cd5c68ff03019195d5acb35665de861da8b74f8.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": ""
+     }
+    },
+    "FunctionName": "get_data",
+    "Handler": "getDataOpenAQ.lambda_handler",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaRole3A44B857",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "LambdaRoleDefaultPolicy75625A82",
+    "LambdaRole3A44B857"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/getData/Resource",
+    "aws:asset:path": "asset.eeebbf0c853893040f15936f7cd5c68ff03019195d5acb35665de861da8b74f8",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "getDataApiGatewayInvokePermission7CA06792": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getDataF05E9BD5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/*//*/*/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/getData/ApiGatewayInvokePermission"
+   }
+  },
+  "getLocations07340221": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "0047738357923c9569a1a3b77f24b77978962f5e7af58bfb49ca1a64fde63b54.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": ""
+     }
+    },
+    "FunctionName": "get_locations",
+    "Handler": "getLocations.lambda_handler",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaRole3A44B857",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "LambdaRoleDefaultPolicy75625A82",
+    "LambdaRole3A44B857"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/getLocations/Resource",
+    "aws:asset:path": "asset.0047738357923c9569a1a3b77f24b77978962f5e7af58bfb49ca1a64fde63b54",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "getLocationsApiGatewayInvokePermission4A9698B0": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getLocations07340221",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/*//*/*/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/getLocations/ApiGatewayInvokePermission"
+   }
+  },
+  "agregateDataC2032335": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "74092b7f4ae419099e0c6a6025547763d2d40cfdbc3261c79039a037c53e9edd.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "aggregatedMeasurements237BB9F4"
+      }
+     }
+    },
+    "FunctionName": "post_measurements",
+    "Handler": "agregateData.lambda_handler",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaRole3A44B857",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "LambdaRoleDefaultPolicy75625A82",
+    "LambdaRole3A44B857"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/agregateData/Resource",
+    "aws:asset:path": "asset.74092b7f4ae419099e0c6a6025547763d2d40cfdbc3261c79039a037c53e9edd",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "agregateDataApiGatewayInvokePermission1D261441": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "agregateDataC2032335",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/*//*/*/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/agregateData/ApiGatewayInvokePermission"
+   }
+  },
+  "predictionpollution2581FFC6": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "ea447daa33a2072a3915bb1715ad4a08d42e17796f7243e8f37b0175bffc96f0.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "predictiontable4988DB8D"
+      }
+     }
+    },
+    "FunctionName": "predictions_pollution",
+    "Handler": "prediction_pollution.lambda_handler",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaRole3A44B857",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "LambdaRoleDefaultPolicy75625A82",
+    "LambdaRole3A44B857"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/prediction_pollution/Resource",
+    "aws:asset:path": "asset.ea447daa33a2072a3915bb1715ad4a08d42e17796f7243e8f37b0175bffc96f0",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "predictionpollutionApiGatewayInvokePermissionC010560D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "predictionpollution2581FFC6",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/*//*/*/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/prediction_pollution/ApiGatewayInvokePermission"
+   }
+  },
+  "searchF2A83B93": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "fb3098fe35de35003cd5b2168a583db6fe6c020c4b430f45bbac2c13e3ab7a60.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "predictiontable4988DB8D"
+      }
+     }
+    },
+    "FunctionName": "search",
+    "Handler": "search.lambda_handler",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaRole3A44B857",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "LambdaRoleDefaultPolicy75625A82",
+    "LambdaRole3A44B857"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/search/Resource",
+    "aws:asset:path": "asset.fb3098fe35de35003cd5b2168a583db6fe6c020c4b430f45bbac2c13e3ab7a60",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "searchApiGatewayInvokePermissionE44B604E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "searchF2A83B93",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "InternshipC3A40F62"
+       },
+       "/*//*/*/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CloudBackStack/search/ApiGatewayInvokePermission"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOzU7DMBCEn6V3x5CGF2iLuCGqwr3a2EtY4p8otlVFkd8d/6RSOc23O6vZ2fP2pePPO7i5RsixUdTz9dODGFlaXVfX8fUYxIienb7NRlWO4DAyAs3Xi1WY/aJnq0gseawUmVwMaCtT8hf09bJAZDDRAB5vsKQQdP4wUcnZ8BUnZReNpnx/mFLDoeRUSPc2zAJzJfaO/sfKbG50d7fkwpEp0L0EvuaeOGtyjqxhb8EInyGt7xyZ667gHHrHD1niv8iP4KfgWXFyHTLD46fMJ2sk1ajzkjqZp463Ld/vfh1RMwfjSSO/VP0DoT5lQZMBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOwW7DIBBEvyV3Quu6h14TV71VjZzeozVsHGIDlhdkWYh/rwBHSk/zVrOamTdevdf8dQcL7YUc9qPqeDg7EAODhS6Bah6OXgzoWHM1GxU5AmFkCjQPrR0x+VlPdlRiTWehyORqQFvZ8fALXfnMEBlMqgeHC6w8tEjuMKmcs+EnTqNdNZrc/nSdHfQ5p0CLZP0sME1i3+huViZzo4e7JWeObATdSeAh7cRZKyJlDfvyRrgEzdU8ODKqL0CEjvghSfwX+ePd5B3LTpqjTP/clLixRqoSdVrdzZqXmlcV/9jdSan97I1TGnlb9A8h0XbWkwEAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "CloudBackStack/CDKMetadata/Default"

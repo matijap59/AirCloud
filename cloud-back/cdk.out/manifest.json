@@ -1,0 +1,193 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "CloudBackStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "CloudBackStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "CloudBackStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "CloudBackStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f89dd0742209eedef9e8afaa0f0f6f64d47e11578e81a3670d8fa40b4fb6b174.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "CloudBackStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "CloudBackStack.assets"
+      ],
+      "metadata": {
+        "/CloudBackStack/matijafesfsfesfes/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "matijafesfsfesfes7AC32807"
+          }
+        ],
+        "/CloudBackStack/S3AccessRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3AccessRole49D67050"
+          }
+        ],
+        "/CloudBackStack/unique-initialtable-nameMP": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "uniqueinitialtablenameMP08938AAF"
+            }
+          }
+        ],
+        "/CloudBackStack/unique-initialtable-nameMP/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "uniqueinitialtablenameMP08938AAF"
+          }
+        ],
+        "/CloudBackStack/ApiGatewayRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRoleD2518903"
+          }
+        ],
+        "/CloudBackStack/ApiGatewayRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRoleDefaultPolicyC1776BBE"
+          }
+        ],
+        "/CloudBackStack/Internship/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipC3A40F62"
+          }
+        ],
+        "/CloudBackStack/Internship/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipDeployment3F0AEB9E971200e519c4e02d4b1a2c75f30cb688"
+          }
+        ],
+        "/CloudBackStack/Internship/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipDeploymentStageprodD264E60D"
+          }
+        ],
+        "/CloudBackStack/Internship/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipEndpoint9A52C796"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshipOPTIONSBCBA6652"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/helloWorld/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshiphelloWorld1C4DAF2F"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/helloWorld/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshiphelloWorldOPTIONS24FCFE6C"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/helloWorld/GET/ApiPermission.CloudBackStackInternship9A4650D6.GET..helloWorld": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshiphelloWorldGETApiPermissionCloudBackStackInternship9A4650D6GEThelloWorldD374D8CC"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/helloWorld/GET/ApiPermission.Test.CloudBackStackInternship9A4650D6.GET..helloWorld": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshiphelloWorldGETApiPermissionTestCloudBackStackInternship9A4650D6GEThelloWorldEDBC398C"
+          }
+        ],
+        "/CloudBackStack/Internship/Default/helloWorld/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InternshiphelloWorldGET219FC906"
+          }
+        ],
+        "/CloudBackStack/LambdaRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaRole3A44B857"
+          }
+        ],
+        "/CloudBackStack/LambdaRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaRoleDefaultPolicy75625A82"
+          }
+        ],
+        "/CloudBackStack/helloWorldExample/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "helloWorldExampleE3FA27C7"
+          }
+        ],
+        "/CloudBackStack/helloWorldExample/ApiGatewayInvokePermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "helloWorldExampleApiGatewayInvokePermission66FD336F"
+          }
+        ],
+        "/CloudBackStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/CloudBackStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/CloudBackStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/CloudBackStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "CloudBackStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
